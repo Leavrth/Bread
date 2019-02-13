@@ -80,10 +80,10 @@ bool Game::DoFrame()
 	D3DGph->g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL,
 		D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0L);
 	//-渲染部分--------------------------------
-	D3DGph->D3D_bgdDraw(cameraPos.x, cameraPos.y);
+	D3DGph->D3D_bgdDraw(cameraPos.x, cameraPos.y, mapID);
 	D3DGph->D3D_booDraw(mancoord[0]+21, mancoord[1]+50);
-	D3DGph->D3D_infoDraw(x_mps, y_mps);
-	D3DGph->D3D_manDraw(mancoord[0], mancoord[1], ntex, face);
+	D3DGph->D3D_infoDraw(x_mps, y_mps, mwhl);  // 第三个参数用于传递临时数据
+	//D3DGph->D3D_manDraw(mancoord[0], mancoord[1], ntex, face);
 	//------------------------------------------
 	D3DGph->g_pd3dDevice->EndScene();
 	D3DGph->g_pd3dDevice->Present(NULL, NULL, NULL, NULL);
@@ -115,12 +115,20 @@ bool Game::DoPostFrame()
 }
 
 void Game::checkPos() {
-	if (x_mps <= 0) cameraPos.x -= 5;
-	else if (x_mps >= 799) cameraPos.x += 5;
-	if (y_mps <= 0) cameraPos.y -= 5;
-	else if (y_mps >= 599) cameraPos.y += 5;
+	if (x_mps <= 0) cameraPos.x -= 15;
+	else if (x_mps >= 799) cameraPos.x += 15;
+	if (y_mps <= 0) cameraPos.y -= 15;
+	else if (y_mps >= 599) cameraPos.y += 15;
 	if (cameraPos.x < 0) cameraPos.x = 0;
-	else if (cameraPos.x + 800 > mapSize[0]) cameraPos.x = mapSize[0] - 800;
+	else if (cameraPos.x + cameraPos.w > mapSize[0]) cameraPos.x = mapSize[0] - cameraPos.w;
 	if (cameraPos.y < 0) cameraPos.y = 0;
-	else if (cameraPos.y + 600 > mapSize[1]) cameraPos.y = mapSize[1] - 600;
+	else if (cameraPos.y + cameraPos.h > mapSize[1]) cameraPos.y = mapSize[1] - cameraPos.h;
+}
+
+void Game::checkWhl() {
+	const short n = mwhl / 120;
+	cameraPos.w += n * 220;
+	cameraPos.h += n * 165;
+	if (cameraPos.w > mapSize[0]) { cameraPos.w = mapSize[0]; cameraPos.h = mapSize[1]; }
+	else if (cameraPos.w < width) { cameraPos.w = width; cameraPos.h = height; }
 }

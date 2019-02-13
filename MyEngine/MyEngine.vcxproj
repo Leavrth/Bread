@@ -131,8 +131,8 @@
   <ItemGroup>
     <Image Include="BGD.png" />
     <Image Include="Bomb.png" />
-    <Image Include="Man.png" />
-    <Image Include="WB.png" />
+    <Image Include="grass.png" />
+    <Image Include="grass_and_dirt.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
