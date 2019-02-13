@@ -37,16 +37,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Man.png">
-      <Filter>资源文件</Filter>
-    </Image>
     <Image Include="BGD.png">
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="Bomb.png">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="WB.png">
+    <Image Include="grass_and_dirt.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="grass.png">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

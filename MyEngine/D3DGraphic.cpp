@@ -3,7 +3,7 @@
 #include <tchar.h>
 
 
-HRESULT D3DGraphic::D3D_Init(float& mapSizex, float& mapSizey)
+HRESULT D3DGraphic::D3D_Init(const float& mapSizex, const float& mapSizey)
 {
 	LPDIRECT3D9 pD3D = NULL;
 	if (NULL == (pD3D = Direct3DCreate9(D3D_SDK_VERSION)))
@@ -51,63 +51,34 @@ HRESULT D3DGraphic::D3D_Clean()
 	return S_OK;
 }
 
-HRESULT D3DGraphic::D3D_ObjectInit(float& mapSizex, float& mapSizey)
+HRESULT D3DGraphic::D3D_ObjectInit(const float& mapSizex, const float& mapSizey)
 {
-	// µ¼ÈëÈË
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"WB.png", 260, 216, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
-		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexMan)))
+	
+	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"grass_and_dirt.png", 224, 256, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexMap[0])))
 		return E_FAIL;
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"BGD.png", 2400, 1600, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"grass_and_dirt.png", 112, 128, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexMap[1])))
+		return E_FAIL;
+	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"grass_and_dirt.png", 56, 64, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexMap[2])))
+		return E_FAIL;
+	
+	// 80*60¸ö¸ñ×Ó£¬Ò»¸ö¸ñ×Ó32*32ÏñËØ
+	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"BGD.png", mapSizex, mapSizey, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexBGD)))
 		return E_FAIL;
-	mapSizex = 2400, mapSizey = 1600;
+	
 	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"Bomb.png", 30, 30, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexBoo)))
 		return E_FAIL;
-	/*
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"Bgd.png", 1600, 460, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
-	D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexBgd))){
-	MB(L"Í¼Æ¬¼ÓÔØ´íÎó", L"Bgd.png");
-	return E_FAIL;
-	}
-
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"man.png", 396, 77, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
-	D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexture))){
-	MB(L"Í¼Æ¬¼ÓÔØ´íÎó", L"man.png");
-	return E_FAIL;
-	}
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"t_Bgd.png", 800, 140, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
-	D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexTBgd))){
-	MB(L"Í¼Æ¬¼ÓÔØ´íÎó", L"t_Bgd.png");
-	return E_FAIL;
-	}
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"skill1.png", 1428, 900, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
-	D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexSkill))){
-	MB(L"Í¼Æ¬¼ÓÔØ´íÎó", L"skill1.png");
-	return E_FAIL;
-	}
-	*/
+	
 	// ´´½¨¾«Áé
-	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_pSprMan)))
+	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_pSpr)))
 		return E_FAIL;
-	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_pSprBGD)))
-		return E_FAIL;
-	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_pSprBoo)))
-		return E_FAIL;
-	/*
-	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_pSkill)))
-	return E_FAIL;
+	
 
-	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_pTBgd)))
-	return E_FAIL;
 
-	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_pBgd)))
-	return E_FAIL;
-
-	if (FAILED(D3DXCreateSprite(g_pd3dDevice, &g_pSprite)))
-	return E_FAIL;
-
-	*/
 	if (FAILED(D3DXCreateFont(g_pd3dDevice, 14, 0, 0, 1, FALSE, DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, 0, _T("Î¢ÈíÑÅºÚ"), &g_pFont)))
 		return E_FAIL;
@@ -116,49 +87,33 @@ HRESULT D3DGraphic::D3D_ObjectInit(float& mapSizex, float& mapSizey)
 }
 
 
-HRESULT D3DGraphic::D3D_infoDraw(float _mx, float _my)
+HRESULT D3DGraphic::D3D_infoDraw(float _mx, float _my, const float& _tmp)
 {
 	static wchar_t info[80];
 	static int _n;
 	static RECT formatRect; GetClientRect(hWnd, &formatRect);
 	formatRect.top += 15; formatRect.left += 40;
-	_n = swprintf_s(info, 80, _T("mouseX:%0.3f,mouseY:%0.3f"), _mx, _my);
+	_n = swprintf_s(info, 80, _T("mouseX:%0.3f,mouseY:%0.3f,tmpData:%0.3f"), _mx, _my, _tmp);
 	if (FAILED(g_pFont->DrawText(NULL, info, _n, &formatRect, DT_TOP | DT_LEFT, D3DCOLOR_XRGB(36, 36, 36))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT D3DGraphic::D3D_manDraw(float _mx, float _my, short ntex, short face)
-{
-	RECT rect;
-	rect.top = face*90.5;
-	rect.left = ntex*72.25;
-	rect.right = (ntex+1) * 72.25;
-	rect.bottom = (face+1) * 90.5;
-	g_pSprMan->Begin(D3DXSPRITE_ALPHABLEND);
-	if (FAILED(g_pSprMan->Draw(g_pTexMan, &rect, NULL, &D3DXVECTOR3(_mx, _my, 0.0f), 0xffffffff))) {
-		g_pSprMan->End();
-		return E_FAIL;
-	}
-	g_pSprMan->End();
-	return S_OK;
 
-}
-
-HRESULT D3DGraphic::D3D_bgdDraw(float _cx, float _cy)
+HRESULT D3DGraphic::D3D_bgdDraw(float _cx, float _cy, const short (*mapId)[80])
 {
 	RECT rect;
 	rect.top = _cy;
 	rect.left = _cx;
 	rect.right = rect.left + 800;
-	rect.bottom = rect.right + 600;
-	g_pSprBGD->Begin(D3DXSPRITE_ALPHABLEND);
-	if (FAILED(g_pSprBGD->Draw(g_pTexBGD, &rect, NULL, &D3DXVECTOR3(0, 0, 0.0f), 0xffffffff))) {
-		g_pSprBGD->End();
+	rect.bottom = rect.top + 600;
+	g_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
+	if (FAILED(g_pSpr->Draw(g_pTexBGD, &rect, NULL, &D3DXVECTOR3(0, 0, 0.0f), 0xffffffff))) {
+		g_pSpr->End();
 		return E_FAIL;
 	}
-	g_pSprBGD->End();
+	g_pSpr->End();
 	return S_OK;
 }
 HRESULT D3DGraphic::D3D_booDraw(float _mx, float _my) 
@@ -168,12 +123,12 @@ HRESULT D3DGraphic::D3D_booDraw(float _mx, float _my)
 	rect.left = 0;
 	rect.right = 30;
 	rect.bottom = 30;
-	g_pSprBoo->Begin(D3DXSPRITE_ALPHABLEND);
-	if (FAILED(g_pSprBoo->Draw(g_pTexBoo, &rect, NULL, &D3DXVECTOR3(_mx, _my, 0.0f), 0xffffffcc))) {
-		g_pSprBoo->End();
+	g_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
+	if (FAILED(g_pSpr->Draw(g_pTexBoo, &rect, NULL, &D3DXVECTOR3(_mx, _my, 0.0f), 0xffffffcc))) {
+		g_pSpr->End();
 		return E_FAIL;
 	}
-	g_pSprBoo->End();
+	g_pSpr->End();
 	return S_OK;
 }
 
@@ -182,18 +137,3 @@ D3DGraphic::~D3DGraphic()
 
 }
 
-/*
-LPD3DXSPRITE g_pBgd; //µØÍ¼
-HRESULT D3DGraphic::D3D_manSpritDraw(float _x, float _y)
-{
-g_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
-
-if (FAILED(g_pSprite->Draw(g_pTexture, &t_Sprite[n_tex], NULL, &D3DXVECTOR3(_x, _y, 0.0f), 0xffffffff)))
-{
-g_pSprite->End();
-return E_FAIL;
-}
-g_pSprite->End();
-return S_OK;
-}
-*/

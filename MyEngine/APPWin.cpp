@@ -139,7 +139,7 @@ HWND CreateMainWindow(HINSTANCE hInst)
 
 
 
-// 消息处理函数——仅仅包含销毁 (destroy) 消息
+// 消息处理函数
 long FAR PASCAL WindowProc(HWND hWnd, UINT uMsg, \
 	WPARAM wParam, LPARAM lParam)
 {
@@ -149,6 +149,9 @@ long FAR PASCAL WindowProc(HWND hWnd, UINT uMsg, \
 		return 0;
 	case WM_MOUSEMOVE:
 		game->sendMouPos(LOWORD(lParam), HIWORD(lParam));
+		return 0;
+	case WM_MOUSEWHEEL:
+		game->sendMouWhl(HIWORD(wParam));
 		return 0;
 	case WM_KEYDOWN:
 		switch (wParam) {
