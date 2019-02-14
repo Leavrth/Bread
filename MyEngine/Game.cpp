@@ -3,7 +3,7 @@ bool Game::DoInit()
 {
 	// 这里执行应用程序初始化函数，比如设置图形、声音、网络，等等
 	D3DGph = new D3DGraphic(hWnd, width, height);
-	if (FAILED(D3DGph->D3D_Init(mapSize[0], mapSize[1])))
+	if (FAILED(D3DGph->D3D_Init()))
 		return false;
 	// 如果执行成功，就返回 true ，否则返回 FALSE
 	return true;
@@ -78,11 +78,11 @@ bool Game::DoFrame()
 	// 执行 per-frame 处理过程，比如渲染
 	D3DGph->g_pd3dDevice->BeginScene();
 	D3DGph->g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL,
-		D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0L);
+		D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0L);
 	//-渲染部分--------------------------------
-	D3DGph->D3D_bgdDraw(cameraPos.x, cameraPos.y, mapID);
+	D3DGph->D3D_bgdDraw(cameraPos.x, cameraPos.y, mapID, scalingLevel);
 	D3DGph->D3D_booDraw(mancoord[0]+21, mancoord[1]+50);
-	D3DGph->D3D_infoDraw(x_mps, y_mps, mwhl);  // 第三个参数用于传递临时数据
+	D3DGph->D3D_infoDraw(cameraPos.x, cameraPos.y, mwhl);  // 第三个参数用于传递临时数据
 	//D3DGph->D3D_manDraw(mancoord[0], mancoord[1], ntex, face);
 	//------------------------------------------
 	D3DGph->g_pd3dDevice->EndScene();
@@ -115,20 +115,21 @@ bool Game::DoPostFrame()
 }
 
 void Game::checkPos() {
-	if (x_mps <= 0) cameraPos.x -= 15;
-	else if (x_mps >= 799) cameraPos.x += 15;
-	if (y_mps <= 0) cameraPos.y -= 15;
-	else if (y_mps >= 599) cameraPos.y += 15;
-	if (cameraPos.x < 0) cameraPos.x = 0;
-	else if (cameraPos.x + cameraPos.w > mapSize[0]) cameraPos.x = mapSize[0] - cameraPos.w;
-	if (cameraPos.y < 0) cameraPos.y = 0;
-	else if (cameraPos.y + cameraPos.h > mapSize[1]) cameraPos.y = mapSize[1] - cameraPos.h;
+	if (x_mps <= 0) cameraPos.x -= 10;
+	else if (x_mps >= 799) cameraPos.x += 10;
+	if (y_mps <= 0) cameraPos.y -= 10;
+	else if (y_mps >= 599) cameraPos.y += 10;
+	checkEdge();
 }
 
 void Game::checkWhl() {
-	const short n = mwhl / 120;
-	cameraPos.w += n * 220;
-	cameraPos.h += n * 165;
-	if (cameraPos.w > mapSize[0]) { cameraPos.w = mapSize[0]; cameraPos.h = mapSize[1]; }
-	else if (cameraPos.w < width) { cameraPos.w = width; cameraPos.h = height; }
+	const short n = mwhl > 0 ? 1 : -1;
+	scalingLevel += n;
+	if (scalingLevel > 2) scalingLevel = 2;
+	else if (scalingLevel < 0) scalingLevel = 0;
+	else {
+		cameraPos.x += n * 400;
+		cameraPos.y += n * 300;
+		checkEdge();
+	}
 }

@@ -18,6 +18,12 @@ public:
 private:
 	void checkPos();
 	void checkWhl(); //滚轮事件
+	void inline checkEdge() {
+		if (cameraPos.x < 0) cameraPos.x = 0;
+		else if (cameraPos.x + width > mapSize[scalingLevel][0]) cameraPos.x = mapSize[scalingLevel][0] - width;
+		if (cameraPos.y < 0) cameraPos.y = 0;
+		else if (cameraPos.y + height > mapSize[scalingLevel][1]) cameraPos.y = mapSize[scalingLevel][1] - height;
+	}
 
 	HINSTANCE hInst;
 	int width, height;
@@ -37,11 +43,13 @@ private:
 	struct _cameraPos { // 摄像机坐标
 		float x = 0;
 		float y = 0;
-		float w = 800.0f;
-		float h = 600.0f;
 	}cameraPos;
-	float mapSize[2] = {2560.0f, 1920.0f};
+	float mapSize[3][2] = { 
+		{640.0f + 640.0f, 480.0f + 480.0f}, 
+		{1280.0f + 640.0f, 960.0f + 480.0f}, 
+		{2560.0f + 640.0f, 1920.0f + 480.f} 
+	};
 	short mapID[60][80] = {0}; // (r,c)
-
+	short scalingLevel = 2; // 缩放级别 0-2
 
 };
