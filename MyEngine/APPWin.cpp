@@ -82,6 +82,7 @@ int PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrev, \
 
 	// 执行关闭函数
 	game->DoShutdown();
+	delete game;
 
 	// 取消注册窗口
 	UnregisterWindowClasses(hInst);
@@ -152,6 +153,9 @@ long FAR PASCAL WindowProc(HWND hWnd, UINT uMsg, \
 		return 0;
 	case WM_MOUSEWHEEL:
 		game->sendMouWhl(HIWORD(wParam));
+		return 0;
+	case WM_LBUTTONDOWN:
+		game->actMouDown();
 		return 0;
 	case WM_KEYDOWN:
 		switch (wParam) {
