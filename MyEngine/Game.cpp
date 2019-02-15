@@ -68,6 +68,13 @@ bool Game::DoPreFrame()
 		else
 			mancoord[0] += 12;
 	}
+	else if (GetAsyncKeyState(32)) {// SPASE
+		nn = (nn + 1) % 48;
+	}
+	else if (GetAsyncKeyState(70) && checkMsg.ischeck){//f
+		mapID[checkMsg.checkny][checkMsg.checknx] = nn;
+	}
+
 	// 上96 下408 左84 右636
 	if (!move) ntex = face*(face-1)*(face-2)/3;
 	return true;
@@ -80,9 +87,9 @@ bool Game::DoFrame()
 	D3DGph->g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL,
 		D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0L);
 	//-渲染部分--------------------------------
-	D3DGph->D3D_bgdDraw(cameraPos.x, cameraPos.y, mapID, scalingLevel);
+	D3DGph->D3D_bgdDraw(cameraPos.x, cameraPos.y, mapID, scalingLevel, checkMsg, nn);
 	D3DGph->D3D_booDraw(mancoord[0]+21, mancoord[1]+50);
-	D3DGph->D3D_infoDraw(cameraPos.x, cameraPos.y, mwhl);  // 第三个参数用于传递临时数据
+	D3DGph->D3D_infoDraw(cameraPos.x, cameraPos.y, checkMsg.checknx);  // 第三个参数用于传递临时数据
 	//D3DGph->D3D_manDraw(mancoord[0], mancoord[1], ntex, face);
 	//------------------------------------------
 	D3DGph->g_pd3dDevice->EndScene();
@@ -131,5 +138,22 @@ void Game::checkWhl() {
 		cameraPos.x += n * 400;
 		cameraPos.y += n * 300;
 		checkEdge();
+	}
+}
+
+void Game::actMouDown() {
+	const short absPosx = cameraPos.x + x_mps - 256;
+	const short absPosy = cameraPos.y + y_mps - 192;
+	const short scaling[3] = { 8, 16, 32 };
+	const short SI = scaling[scalingLevel];
+	if (absPosx<0 || absPosx>SI * 80 || absPosy<0 || absPosy>SI * 60)return;
+	const short nx = absPosx / SI;
+	const short ny = absPosy / SI;
+	if (checkMsg.ischeck && checkMsg.checknx == nx && checkMsg.checkny == ny)
+		checkMsg.ischeck = false;
+	else {
+		checkMsg.ischeck = true;
+		checkMsg.checknx = nx;
+		checkMsg.checkny = ny;
 	}
 }

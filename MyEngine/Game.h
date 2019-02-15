@@ -15,6 +15,7 @@ public:
 
 	void sendMouWhl(const short whl) { mwhl = whl; checkWhl(); mwhl = 0; }
 	void sendMouPos(float x, float y) { x_mps = x; y_mps = y; };
+	void actMouDown();
 private:
 	void checkPos();
 	void checkWhl(); //滚轮事件
@@ -45,11 +46,13 @@ private:
 		float y = 0;
 	}cameraPos;
 	float mapSize[3][2] = { 
-		{640.0f + 640.0f, 480.0f + 480.0f}, 
-		{1280.0f + 640.0f, 960.0f + 480.0f}, 
-		{2560.0f + 640.0f, 1920.0f + 480.f} 
+		{640.0f + 512.0f, 480.0f + 384.0f}, 
+		{1280.0f + 512.0f, 960.0f + 384.0f}, 
+		{2560.0f + 512.0f, 1920.0f + 384.f} 
 	};
 	short mapID[60][80] = {0}; // (r,c)
 	short scalingLevel = 2; // 缩放级别 0-2
+	_checkMsg checkMsg;
+	short nn = 0; // 0-47;
 
 };
