@@ -15,8 +15,8 @@ HWND g_hWnd;            // 全局窗口句柄
 #define WNDWIDTH 800
 #define WNDHEIGHT 600
 #define WNDTYPE WS_OVERLAPPEDWINDOW
-#define WNDCAPTION  L"FrameClass"
-#define WNDTITLE L"FrameCaption"
+#define WNDCAPTION  "FrameClass"
+#define WNDTITLE "FrameCaption"
 
 						// 主要应用程序原型
 
