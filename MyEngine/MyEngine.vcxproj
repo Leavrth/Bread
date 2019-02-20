@@ -29,7 +29,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -37,6 +37,7 @@
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -102,6 +103,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d9.lib;d3dx10.lib;d3dx9.lib;dxerr.lib;dxguid.lib;winmm.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,12 +123,16 @@
   <ItemGroup>
     <ClInclude Include="D3DGraphic.h" />
     <ClInclude Include="D3DUtil.h" />
+    <ClInclude Include="fileIO.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="keyInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="APPWin.cpp" />
     <ClCompile Include="D3DGraphic.cpp" />
+    <ClCompile Include="fileIO.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="keyInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="BGD.png" />

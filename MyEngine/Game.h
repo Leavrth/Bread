@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 #include "D3DGraphic.h"
+#include "keyInput.h"
 
 class Game
 {
@@ -29,7 +30,8 @@ private:
 	HINSTANCE hInst;
 	int width, height;
 	HWND hWnd;
-	D3DGraphic *D3DGph;
+	D3DGraphic* D3DGph;
+	keyInput* keyInpt;
 	float x_mps, y_mps; // 鼠标坐标
 	short mwhl = 0; // 鼠标滚轮信息
 

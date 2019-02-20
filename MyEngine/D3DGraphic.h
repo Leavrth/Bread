@@ -12,7 +12,7 @@ public:
 	LPDIRECT3DDEVICE9 g_pd3dDevice = NULL;
 
 	HRESULT D3D_Init();
-	HRESULT D3D_Clean();
+	
 	HRESULT D3D_infoDraw(float _mx, float _my, const float& _tmp);
 
 	HRESULT D3D_bgdDraw(int _cx, int _cy, const short (*mapId)[80], const short, const _checkMsg&, short);
@@ -22,6 +22,7 @@ private:
 	HWND hWnd;
 	int width, height;
 	HRESULT D3D_ObjectInit();
+	HRESULT D3D_Clean();
 	ID3DXFont *g_pFont;
 
 	RECT rect[48][3];

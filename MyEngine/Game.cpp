@@ -3,6 +3,7 @@ bool Game::DoInit()
 {
 	// 这里执行应用程序初始化函数，比如设置图形、声音、网络，等等
 	D3DGph = new D3DGraphic(hWnd, width, height);
+	keyInpt = new keyInput();
 	if (FAILED(D3DGph->D3D_Init()))
 		return false;
 	// 如果执行成功，就返回 true ，否则返回 FALSE
@@ -12,8 +13,8 @@ bool Game::DoInit()
 bool Game::DoShutdown()
 {
 	// 这里执行应用程序关闭函数，比如关闭图形、声音，等等
-	D3DGph->D3D_Clean();
 	SAFE_DELETE(D3DGph);
+	SAFE_DELETE(keyInpt);
 	//PoolManager::purge();
 	// 如果执行成功，就返回 true ，否则返回 FALSE
 	return true;
@@ -40,6 +41,7 @@ bool Game::DoPreFrame()
 			mancoord[1] = 96;
 		else
 			mancoord[1] -= 12;
+		cameraPos.y -= 10;
 	}
 	else if (GetAsyncKeyState(83)) {// s
 		if (face == 0)ntex = (ntex + 1) % 4;
@@ -49,6 +51,7 @@ bool Game::DoPreFrame()
 			mancoord[1] = 408;
 		else
 			mancoord[1] += 12;
+		cameraPos.y += 10;
 	}
 	else if (GetAsyncKeyState(65)) {// a
 		if (face == 1)ntex = (ntex + 1) % 4;
@@ -58,6 +61,7 @@ bool Game::DoPreFrame()
 			mancoord[0] = 84;
 		else
 			mancoord[0] -= 12;
+		cameraPos.x -= 10;
 	}
 	else if (GetAsyncKeyState(68)) {// d
 		if (face == 2)ntex = (ntex + 1) % 4;
@@ -67,14 +71,15 @@ bool Game::DoPreFrame()
 			mancoord[0] = 636;
 		else
 			mancoord[0] += 12;
+		cameraPos.x += 10;
 	}
-	else if (GetAsyncKeyState(32)) {// SPASE
+	else if (GetAsyncKeyState(32) & 0x8000) {// SPASE
 		nn = (nn + 1) % 48;
 	}
 	else if (GetAsyncKeyState(70) && checkMsg.ischeck){//f
 		mapID[checkMsg.checkny][checkMsg.checknx] = nn;
 	}
-
+	checkEdge();
 	// 上96 下408 左84 右636
 	if (!move) ntex = face*(face-1)*(face-2)/3;
 	return true;
@@ -100,6 +105,7 @@ bool Game::DoFrame()
 
 bool Game::DoPostFrame()
 {
+	keyInpt->Polling();
 	// 执行 post-frame 处理过程，比如时间同步等
 	static float currentTime = 0.0f;
 	static float formerTime = 0.0f;
@@ -126,7 +132,7 @@ void Game::checkPos() {
 	else if (x_mps >= 799) cameraPos.x += 10;
 	if (y_mps <= 0) cameraPos.y -= 10;
 	else if (y_mps >= 599) cameraPos.y += 10;
-	checkEdge();
+	
 }
 
 void Game::checkWhl() {

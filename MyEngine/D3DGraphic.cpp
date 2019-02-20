@@ -47,26 +47,29 @@ HRESULT D3DGraphic::D3D_Init()
 }
 HRESULT D3DGraphic::D3D_Clean()
 {
-
+	g_pTexMap[0]->Release();
+	g_pTexMap[1]->Release();
+	g_pTexMap[2]->Release();
+	g_pTexBoo->Release();
 	return S_OK;
 }
 
 HRESULT D3DGraphic::D3D_ObjectInit()
 {
 	
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"grass_and_dirt1.png", 224, 256, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, "grass_and_dirt1.png", 224, 256, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexMap[2])))
 		return E_FAIL;
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"grass_and_dirt1.png", 112, 128, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, "grass_and_dirt1.png", 112, 128, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexMap[1])))
 		return E_FAIL;
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"grass_and_dirt1.png", 56, 64, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, "grass_and_dirt1.png", 56, 64, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexMap[0])))
 		return E_FAIL;
 	
 	// 80*60个格子，一个格子32*32像素
 	
-	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, L"Bomb.png", 30, 30, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+	if (FAILED(D3DXCreateTextureFromFileEx(g_pd3dDevice, "Bomb.png", 30, 30, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
 		D3DX_FILTER_TRIANGLE, D3DX_FILTER_TRIANGLE, NULL, NULL, NULL, &g_pTexBoo)))
 		return E_FAIL;
 	
@@ -118,11 +121,11 @@ HRESULT D3DGraphic::D3D_ObjectInit()
 
 HRESULT D3DGraphic::D3D_infoDraw(float _mx, float _my, const float& _tmp)
 {
-	static wchar_t info[80];
+	static char info[80];
 	static int _n;
 	static RECT formatRect; GetClientRect(hWnd, &formatRect);
 	formatRect.top += 15; formatRect.left += 40;
-	_n = swprintf_s(info, 80, _T("mouseX:%0.3f,mouseY:%0.3f,tmpData:%0.3f"), _mx, _my, _tmp);
+	_n = sprintf_s(info, 80, "mouseX:%0.3f,mouseY:%0.3f,tmpData:%0.3f", _mx, _my, _tmp);
 	if (FAILED(g_pFont->DrawText(NULL, info, _n, &formatRect, DT_TOP | DT_LEFT, D3DCOLOR_XRGB(255, 255, 255))))
 		return E_FAIL;
 
@@ -191,6 +194,6 @@ HRESULT D3DGraphic::D3D_booDraw(float _mx, float _my)
 
 D3DGraphic::~D3DGraphic()
 {
-	
+	D3D_Clean();
 }
 

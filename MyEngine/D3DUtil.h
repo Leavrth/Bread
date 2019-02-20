@@ -3,6 +3,8 @@
 #include <functional>
 #include <cstdio>
 
+typedef enum { UNDOWN = 0, DOWN_FIRST = 1, DOWN_CONTINUE = 2 } keyState;
+
 struct _checkMsg{
 		bool ischeck = false;
 		short checknx;

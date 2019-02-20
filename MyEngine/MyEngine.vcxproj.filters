@@ -24,6 +24,12 @@
     <ClInclude Include="D3DGraphic.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="keyInput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fileIO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="APPWin.cpp">
@@ -33,6 +39,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="D3DGraphic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="keyInput.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="fileIO.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
